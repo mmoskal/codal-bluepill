@@ -27,7 +27,7 @@
         "CODAL_TIMESTAMP":"uint64_t",
         "PROCESSOR_WORD_TYPE":"uint32_t"
     },
-    "definitions":"-DSTM32F1 -DSTM32F103xB -include codal-stm32f103/inc/localconf.h",
+    "definitions":"-DSTM32F1 -DSTM32F103xB -include codal-bluepill/inc/localconf.h",
     "cmake_definitions":{
     },
     "cpu_opts":"-mcpu=cortex-m3 -mthumb",
