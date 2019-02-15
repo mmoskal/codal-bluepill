@@ -13,7 +13,7 @@
         "DEVICE_HEAP_ALLOCATOR": 1, 
         "DEVICE_PANIC_HEAP_FULL": 1, 
         "DEVICE_SRAM_BASE": "0x200000EC", 
-        "DEVICE_SRAM_END": "0x20010000", 
+        "DEVICE_SRAM_END": "0x20005000", 
         "DEVICE_STACK_BASE": "DEVICE_SRAM_END", 
         "DEVICE_STACK_SIZE": 2048, 
         "DEVICE_TAG": 0, 
@@ -26,7 +26,7 @@
     }, 
     "cpp_flags": "-std=c++11 -fwrapv -fno-rtti -fno-threadsafe-statics -fno-exceptions -fno-unwind-tables -Wl,--gc-sections -Wl,--sort-common -Wl,--sort-section=alignment -Wno-array-bounds", 
     "cpu_opts": "-mcpu=cortex-m3 -mthumb", 
-    "definitions": "-DSTM32F1 -DSTM32F103xE -include codal-stm32f103/inc/localconf.h", 
+    "definitions": "-DSTM32F1 -DSTM32F103xB -include codal-bluepill/inc/localconf.h", 
     "device": "STM32", 
     "generate_bin": true, 
     "generate_hex": true, 
@@ -38,7 +38,7 @@
             "url": "https://github.com/lancaster-university/codal-core"
         }, 
         {
-            "branch": "d9b86e5a67cf29bbe2021e8585cfadef1b9f498d", 
+            "branch": "feb0d30f6aece1c74048e755383b5041f0cae4ba", 
             "name": "codal-stm32", 
             "type": "git", 
             "url": "https://github.com/lancaster-university/codal-stm32"
@@ -47,6 +47,6 @@
     "linker_flags": "-Wl,--no-wchar-size-warning -Wl,--gc-sections -mcpu=cortex-m3 -mthumb", 
     "post_process": "python ./utils/uf2conv.py  -b 0x08004000 -o <OUTPUT_HEX_DESTINATION>/<OUTPUT_HEX_NAME>.uf2 -c <OUTPUT_BIN_LOCATION>", 
     "processor": "STM32F1", 
-    "snapshot_version": "v1.0.16", 
+    "snapshot_version": "v1.1.0", 
     "toolchain": "ARM_GCC"
 }
