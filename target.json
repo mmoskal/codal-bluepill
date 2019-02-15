@@ -8,7 +8,7 @@
     "generate_hex":true,
     "config":{
         "DEVICE_SRAM_BASE":"0x200000EC",
-        "DEVICE_SRAM_END":"0x20010000",
+        "DEVICE_SRAM_END":"0x20005000",
         "DEVICE_STACK_BASE":"DEVICE_SRAM_END",
         "DEVICE_STACK_SIZE":2048,
         "DEVICE_HEAP_ALLOCATOR":1,
@@ -27,7 +27,7 @@
         "CODAL_TIMESTAMP":"uint64_t",
         "PROCESSOR_WORD_TYPE":"uint32_t"
     },
-    "definitions":"-DSTM32F1 -DSTM32F103xE -include codal-stm32f103/inc/localconf.h",
+    "definitions":"-DSTM32F1 -DSTM32F103xB -include codal-stm32f103/inc/localconf.h",
     "cmake_definitions":{
     },
     "cpu_opts":"-mcpu=cortex-m3 -mthumb",
