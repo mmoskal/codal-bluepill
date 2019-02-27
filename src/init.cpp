@@ -4,6 +4,10 @@
 
 void target_init();
 
+#define USE_HSI 1
+
+#define CHECK(call) if(call != HAL_OK) target_panic(909)
+
 extern "C" void cpu_init()
 {
     SystemCoreClockUpdate();
@@ -13,15 +17,29 @@ extern "C" void cpu_init()
     RCC_ClkInitTypeDef RCC_ClkInitStruct;
     RCC_OscInitTypeDef RCC_OscInitStruct;
 
+    /* -1- Select HSI  as system clock source to allow modification of the PLL configuration */
+    RCC_ClkInitStruct.ClockType       = RCC_CLOCKTYPE_SYSCLK;
+    RCC_ClkInitStruct.SYSCLKSource    = RCC_SYSCLKSOURCE_HSI;
+    CHECK(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0));
+
+#ifdef USE_HSI
+    /* -2- Enable HSI Oscillator, select it as PLL source and finally activate the PLL */
+    RCC_OscInitStruct.OscillatorType    = RCC_OSCILLATORTYPE_HSI;
+    RCC_OscInitStruct.HSIState          = RCC_HSI_ON;
+    RCC_OscInitStruct.HSICalibrationValue  = RCC_HSICALIBRATION_DEFAULT;
+    RCC_OscInitStruct.PLL.PLLSource     = RCC_PLLSOURCE_HSI_DIV2;
+    RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL16; // 64 MHz (8 MHz * 16 / 2)
+#else
     /* Enable HSE oscillator and activate PLL with HSE as source */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON; /* External 8 MHz xtal on OSC_IN/OSC_OUT */
     RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9; // 72 MHz (8 MHz * 9)
-    int r = HAL_RCC_OscConfig(&RCC_OscInitStruct);
-    CODAL_ASSERT(r == HAL_OK);
+#endif
+
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    CHECK(HAL_RCC_OscConfig(&RCC_OscInitStruct));
 
     /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 clocks dividers */
     RCC_ClkInitStruct.ClockType =
@@ -30,8 +48,7 @@ extern "C" void cpu_init()
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;        // 72 MHz
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;         // 36 MHz
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;         // 72 MHz
-    r = HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
-    CODAL_ASSERT(r == HAL_OK);
+    CHECK(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2));
 
     SystemCoreClockUpdate();
 
