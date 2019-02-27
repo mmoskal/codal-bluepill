@@ -22,8 +22,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-#ifndef BIG_BRAINPAD_H
-#define BIG_BRAINPAD_H
+#ifndef BIG_BluePill_H
+#define BIG_BluePill_H
 
 #include "CodalHeapAllocator.h"
 #include "codal-core/inc/types/Event.h"
@@ -42,7 +42,7 @@ DEALINGS IN THE SOFTWARE.
 #include "MultiButton.h"
 //#include "MbedI2C.h"
 //#include "MbedSerial.h"
-#include "BrainPadIO.h"
+#include "BluePillIO.h"
 #include "CodalFiber.h"
 #include "MessageBus.h"
 
@@ -65,34 +65,19 @@ DEALINGS IN THE SOFTWARE.
  */
 namespace codal
 {
-    class BrainPad : public CodalComponent
+    class BluePill : public CodalComponent
     {
         public:
             STMLowLevelTimer lowLevel;
             Timer         timer;
             MessageBus                  messageBus;
-            BrainPadIO                  io;
+            BluePillIO                  io;
             ZSPI                        spi;
-            //codal::_mbed::I2C           i2c;
-
-            Synthesizer synth0;
-            Synthesizer synth1;
-            Mixer mixer;
-            ZPWM pwm;
-
-            ZSingleWireSerial sws;
-            JACDAC jacdac;
-            JackRouter jackRouter;
-
-            Button buttonUp;
-            Button buttonDown;
-            Button buttonLeft;
-            Button buttonRight;
 
             /**
              * Constructor.
              */
-            BrainPad();
+            BluePill();
 
             /**
              * Post constructor initialisation method.
@@ -151,7 +136,7 @@ namespace codal
      * @return MICROBIT_OK on success, MICROBIT_INVALID_PARAMETER milliseconds is less than zero.
      *
      */
-    inline void BrainPad::sleep(uint32_t milliseconds)
+    inline void BluePill::sleep(uint32_t milliseconds)
     {
         fiber_sleep(milliseconds);
     }
@@ -163,13 +148,13 @@ namespace codal
      *
      * @note This will value overflow after 1.6 months.
      */
-    inline unsigned long BrainPad::systemTime()
+    inline unsigned long BluePill::systemTime()
     {
         return system_timer_current_time();
     }
 }
 
-void brainpad_dmesg_flush();
+void BluePill_dmesg_flush();
 
 using namespace codal;
 

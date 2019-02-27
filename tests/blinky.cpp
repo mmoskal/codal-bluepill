@@ -1,6 +1,6 @@
-#include "BrainPad.h"
+#include "BluePill.h"
 
-BrainPad bp;
+BluePill bp;
 
 int main()
 {
