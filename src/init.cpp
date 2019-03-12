@@ -8,7 +8,9 @@ void target_init();
 
 #define CHECK(call) if(call != HAL_OK) target_panic(909)
 
-extern "C" void cpu_init()
+extern "C" 
+__attribute__((weak))
+void cpu_init()
 {
     SystemCoreClockUpdate();
 
@@ -22,6 +24,7 @@ extern "C" void cpu_init()
     RCC_ClkInitStruct.SYSCLKSource    = RCC_SYSCLKSOURCE_HSI;
     CHECK(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0));
 
+#if 0
 #ifdef USE_HSI
     /* -2- Enable HSI Oscillator, select it as PLL source and finally activate the PLL */
     RCC_OscInitStruct.OscillatorType    = RCC_OSCILLATORTYPE_HSI;
@@ -49,6 +52,15 @@ extern "C" void cpu_init()
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;         // 36 MHz
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;         // 72 MHz
     CHECK(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2));
+#else
+    RCC_ClkInitStruct.ClockType =
+        (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI; // 8 MHz
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;        // 8 MHz
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;         // 8 MHz
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;         // 8 MHz
+    CHECK(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0));
+#endif
 
     SystemCoreClockUpdate();
 
