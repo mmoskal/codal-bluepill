@@ -4,7 +4,9 @@
 
 void target_init();
 
-extern "C" void cpu_init()
+extern "C"
+__attribute((weak))
+void cpu_init()
 {
     SystemCoreClockUpdate();
 
