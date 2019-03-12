@@ -12,3 +12,5 @@
 #define USB_DEFAULT_PID 0x5799 // similar to examples
 #define USB_EP_FLAG_NO_AUTO_ZLP 0x01
 #define DEVICE_USB_ENDPOINTS 6
+
+#define USE_FULL_LL_DRIVER 1
